@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 2019_10_21_015740) do
   create_table "bands", force: :cascade do |t|
     t.string "name"
     t.string "genre"
-    t.string "size"
+    t.string "popularity"
   end
 
   create_table "cities", force: :cascade do |t|
@@ -24,9 +24,8 @@ ActiveRecord::Schema.define(version: 2019_10_21_015740) do
   end
 
   create_table "shows", force: :cascade do |t|
-    t.string "date"
-    t.string "start_time"
-    t.string "end_time"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.integer "venue_id"
     t.integer "band_id"
   end
