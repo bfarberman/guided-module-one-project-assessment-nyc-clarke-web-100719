@@ -21,7 +21,7 @@ class CommandLineInterface
              menu.choice "Book a Venue", -> { choose_city }
              menu.choice "My Shows",     -> { list_my_shows }
              menu.choice "Cancel a Show", -> { cancel_a_show }
-             menu.choice "Update a Show"
+             menu.choice "Update a Show", -> { update_a_show }
              menu.choice "Change band name", -> { change_band_name }
              menu.choice "Exit"
          end
@@ -117,6 +117,7 @@ def list_my_shows
             end
         end
         menu.choice "<< Back", -> { main_menu }
+        @band.reload
     end
 end
 
@@ -155,6 +156,7 @@ def change_band_name
         main_menu
     end
 
+
 def cancel_a_show
     PROMPT.select("Select the show you'd like to cancel") do |menu|
         @band.shows.each do |show|
@@ -164,8 +166,24 @@ def cancel_a_show
             end
         end
         menu.choice "<< Back", -> { main_menu }
+        @band.reload 
     end
 end
+
+
+def update_a_show
+    PROMPT.select("Select the show you'd like to change times for") do |menu|
+        @band.shows.each do |show|
+            menu.choice "#{show.venue.name}, #{show.start_time}, #{show.end_time}", -> do
+            ans = PROMPT.ask("Change times using format YYYY-MM-DD HH:MM, YYYY-MM-DD HH:MM:")
+                Show.update(show.id, start_time: ans, end_time: ans) 
+                prompt_return_to_main_menu
+            end
+        end
+        menu.choice "<< Back", -> { main_menu }
+        @band.reload 
+    end
+end  
 
 
 
